@@ -13,9 +13,11 @@ App.FromNowView = Ember.View.extend({
 
   template: Ember.Handlebars.compile('{{view.output}}'),
 
+  currentTick: 0,
+
   output: function() {
     return moment(this.get('value')).fromNow();
-  }.property('value'),
+  }.property('value', 'currentTick'),
 
   didInsertElement: function() {
     this.tick();
@@ -24,7 +26,7 @@ App.FromNowView = Ember.View.extend({
   tick: function() {
     var nextTick = Ember.run.later(this, function() {
       console.log('tick');
-      this.notifyPropertyChange('value');
+      this.incrementProperty('currentTick');
       this.tick();
     }, 1000);
     this.set('nextTick', nextTick);
